@@ -147,6 +147,8 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
             throw POSIXError(.EIO)
         }
         
+        data.removeLast()
+        
         return FSFileName(data: data)
     }
     
