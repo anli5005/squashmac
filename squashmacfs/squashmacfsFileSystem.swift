@@ -24,10 +24,12 @@ class squashmacfsFileSystem : FSUnaryFileSystem & FSUnaryFileSystemOperations {
             return .notRecognized
         }
         
-        return .usable(name: getName(from: pathResource), containerID: FSContainerIdentifier(uuid: UUID()))
+        return .recognized(name: "", containerID: FSContainerIdentifier(uuid: UUID()))
     }
     
     func loadResource(resource: FSResource, options: FSTaskOptions) async throws -> FSVolume {
+        containerStatus = .ready
+        
         guard let pathResource = resource as? FSPathURLResource else {
             throw POSIXError(.ENOTSUP)
         }
@@ -38,7 +40,7 @@ class squashmacfsFileSystem : FSUnaryFileSystem & FSUnaryFileSystemOperations {
         
         _ = pathResource.url.startAccessingSecurityScopedResource()
         let path = pathResource.url.path(percentEncoded: false)
-        
+                
         return Volume(path: path, name: getName(from: pathResource))
     }
 

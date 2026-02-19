@@ -38,13 +38,6 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
     func activate(options: FSTaskOptions) async throws -> FSItem {
         let root = Item(parent: .parentOfRoot)
         self.root = root
-        return root
-    }
-    
-    func mount(options: FSTaskOptions) async throws {
-        guard let root else {
-            throw POSIXError(.EIO)
-        }
         
         memset(fs, 0, MemoryLayout<sqfs>.size)
         guard sqfs_open_image(fs, path, 0) == SQFS_OK else {
@@ -57,6 +50,12 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
             destroy()
             throw POSIXError(.EIO)
         }
+        
+        return root
+    }
+    
+    func mount(options: FSTaskOptions) async throws {
+        
     }
     
     private func destroy() {
@@ -70,10 +69,11 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
     }
     
     func unmount() async {
-        destroy()
+        
     }
     
     func deactivate(options: FSDeactivateOptions = []) async throws {
+        destroy()
         root = nil
     }
     
@@ -150,7 +150,7 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         return FSFileName(data: data)
     }
     
-    func attributes(_ desired: FSItem.GetAttributesRequest, of item: FSItem) async throws -> FSItem.Attributes {
+    func getAttributes(_ desired: FSItem.GetAttributesRequest, of item: FSItem) throws -> FSItem.Attributes {
         guard let item = item as? Item, let inode = item.inode else {
             throw POSIXError(.EINVAL)
         }
@@ -262,7 +262,11 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         return attrs
     }
     
-    func enumerateDirectory(_ directory: FSItem, startingAt cookie: FSDirectoryCookie, verifier: FSDirectoryVerifier, attributes: FSItem.GetAttributesRequest?, packer: FSDirectoryEntryPacker) async throws -> FSDirectoryVerifier {
+    func attributes(_ desiredAttributes: FSItem.GetAttributesRequest, of item: FSItem) async throws -> FSItem.Attributes {
+        try getAttributes(desiredAttributes, of: item)
+    }
+        
+    func enumerate(_ directory: FSItem, startingAt cookie: FSDirectoryCookie, verifier: FSDirectoryVerifier, attributes: FSItem.GetAttributesRequest?, packer: FSDirectoryEntryPacker) throws -> FSDirectoryVerifier {
         guard let diritem = directory as? Item, let dirnode = diritem.inode else {
             throw POSIXError(.EINVAL)
         }
@@ -272,7 +276,7 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         }
         
         var dir = sqfs_dir()
-        let offset = cookie == .initial ? 0 : off_t(cookie.rawValue)
+        let offset: off_t = cookie == FSDirectoryCookie.initial ? 0 : off_t(cookie.rawValue)
         
         guard sqfs_dir_open(fs, dirnode, &dir, offset) == SQFS_OK else {
             throw POSIXError(.EIO)
@@ -313,7 +317,7 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
                     throw POSIXError(.EIO)
                 }
                 
-                itemAttributes = try await self.attributes(request, of: item)
+                itemAttributes = try self.getAttributes(request, of: item)
             }
             
             if !packer.packEntry(name: entry.filename(), itemType: itemType, itemID: FSItem.Identifier(rawValue: UInt64(entry.inode_number)) ?? .invalid, nextCookie: FSDirectoryCookie(UInt64(nextOffset)), attributes: itemAttributes) {
@@ -328,9 +332,17 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         return FSDirectoryVerifier.initial
     }
     
+    func enumerateDirectory(_ directory: FSItem, startingAt cookie: FSDirectoryCookie, verifier: FSDirectoryVerifier, attributes: FSItem.GetAttributesRequest?, packer: FSDirectoryEntryPacker, replyHandler reply: @escaping (FSDirectoryVerifier, (any Error)?) -> Void) {
+        do {
+            reply(try enumerate(directory, startingAt: cookie, verifier: verifier, attributes: attributes, packer: packer), nil)
+        } catch {
+            reply(FSDirectoryVerifier.initial, error)
+        }
+    }
+    
     // MARK: - Reading
     
-    func read(from item: FSItem, at offset: off_t, length: Int, into buffer: FSMutableFileDataBuffer) async throws -> Int {
+    func doRead(from item: FSItem, at offset: off_t, length: Int, into buffer: FSMutableFileDataBuffer) throws -> Int {
         guard let item = item as? Item, let inode = item.inode else {
             throw POSIXError(.EINVAL)
         }
@@ -366,6 +378,14 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         return Int(size)
     }
     
+    func read(from item: FSItem, at offset: off_t, length: Int, into buffer: FSMutableFileDataBuffer, replyHandler reply: @escaping (Int, (any Error)?) -> Void) {
+        do {
+            reply(try doRead(from: item, at: offset, length: length, into: buffer), nil)
+        } catch {
+            reply(0, error)
+        }
+    }
+    
     // MARK: - Volume Operations
     
     func synchronize(flags: FSSyncFlags) async throws {
@@ -386,9 +406,9 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         let result = FSStatFSResult(fileSystemTypeName: "squashfs")
         
         result.blockSize = Int(fs.pointee.sb.block_size)
-        result.totalBlocks = ((fs.pointee.sb.bytes_used - 1) >> fs.pointee.sb.block_log) + 1
-        result.freeBlocks = 0
-        result.availableBlocks = 0
+        result.totalBytes = fs.pointee.sb.bytes_used
+        result.freeBytes = 0
+        result.availableBytes = 0
         result.totalFiles = UInt64(fs.pointee.sb.inodes)
         result.freeFiles = 0
         
@@ -431,8 +451,8 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         throw POSIXError(.EROFS)
     }
     
-    func renameItem(_ item: FSItem, inDirectory sourceDirectory: FSItem, named sourceName: FSFileName, to destinationName: FSFileName, inDirectory destinationDirectory: FSItem, overItem: FSItem?) async throws -> FSFileName {
-        throw POSIXError(.EROFS)
+    func renameItem(_ item: FSItem, inDirectory sourceDirectory: FSItem, named sourceName: FSFileName, to destinationName: FSFileName, inDirectory destinationDirectory: FSItem, overItem: FSItem?, replyHandler reply: @escaping (FSFileName?, (any Error)?) -> Void) {
+        reply(nil, POSIXError(.EROFS))
     }
     
     func createLink(to item: FSItem, named name: FSFileName, inDirectory directory: FSItem) async throws -> FSFileName {
@@ -447,7 +467,7 @@ class Volume: FSVolume, FSVolume.Operations, FSVolume.PathConfOperations, FSVolu
         throw POSIXError(.EROFS)
     }
     
-    func write(contents: Data, to item: FSItem, at offset: off_t) async throws -> Int {
-        throw POSIXError(.EROFS)
+    func write(contents: Data, to item: FSItem, at offset: off_t, replyHandler reply: @escaping (Int, (any Error)?) -> Void) {
+        reply(0, POSIXError(.EROFS))
     }
 }
