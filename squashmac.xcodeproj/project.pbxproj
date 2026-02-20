@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		891209A12F48EF5D00C76734 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 898327EB2F48EE8200D7ED53 /* liblzma.a */; };
 		89CDDA842F46C01800AED9E2 /* squashmacfs.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 89CDDA7A2F46C01700AED9E2 /* squashmacfs.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		89DA9A8A2F48F1FA004E0628 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 89DA9A892F48F1FA004E0628 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,24 +34,31 @@
 			name = "Embed ExtensionKit Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		89CF74DD2F46F4AA00BDB361 /* Embed Libraries */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		898327EB2F48EE8200D7ED53 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = /opt/homebrew/lib/liblzma.a; sourceTree = "<absolute>"; };
 		89CDDA622F46BFEF00AED9E2 /* squashmac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = squashmac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89CDDA7A2F46C01700AED9E2 /* squashmacfs.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = squashmacfs.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		89DA9A882F48F1A0004E0628 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
+		89DA9A892F48F1FA004E0628 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8941E27B2F48D67E0091A7F7 /* Exceptions for "squashmac" folder in "squashmac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 89CDDA612F46BFEF00AED9E2 /* squashmac */;
+		};
+		898327EA2F48ED7200D7ED53 /* Exceptions for "squashfuse" folder in "squashmacfs" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.libs/libsquashfuse_convenience.a,
+			);
+			target = 89CDDA792F46C01700AED9E2 /* squashmacfs */;
+		};
 		89CDDA882F46C01800AED9E2 /* Exceptions for "squashmacfs" folder in "squashmacfs" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -57,31 +66,14 @@
 			);
 			target = 89CDDA792F46C01700AED9E2 /* squashmacfs */;
 		};
-		89CF74DE2F46F4AA00BDB361 /* Exceptions for "squashfuse" folder in "squashmacfs" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				.libs/libsquashfuse.0.dylib,
-			);
-			target = 89CDDA792F46C01700AED9E2 /* squashmacfs */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		89CF74DF2F46F4AA00BDB361 /* Exceptions for "squashfuse" folder in "Embed Libraries" phase from "squashmacfs" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			attributesByRelativePath = {
-				.libs/libsquashfuse.0.dylib = (CodeSignOnCopy, );
-			};
-			buildPhase = 89CF74DD2F46F4AA00BDB361 /* Embed Libraries */;
-			membershipExceptions = (
-				.libs/libsquashfuse.0.dylib,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		89CDDA642F46BFEF00AED9E2 /* squashmac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8941E27B2F48D67E0091A7F7 /* Exceptions for "squashmac" folder in "squashmac" target */,
+			);
 			path = squashmac;
 			sourceTree = "<group>";
 		};
@@ -96,8 +88,7 @@
 		89CDDC4F2F46C41200AED9E2 /* squashfuse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				89CF74DE2F46F4AA00BDB361 /* Exceptions for "squashfuse" folder in "squashmacfs" target */,
-				89CF74DF2F46F4AA00BDB361 /* Exceptions for "squashfuse" folder in "Embed Libraries" phase from "squashmacfs" target */,
+				898327EA2F48ED7200D7ED53 /* Exceptions for "squashfuse" folder in "squashmacfs" target */,
 			);
 			path = squashfuse;
 			sourceTree = "<group>";
@@ -116,6 +107,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				89DA9A8A2F48F1FA004E0628 /* libz.tbd in Frameworks */,
+				891209A12F48EF5D00C76734 /* liblzma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,30 +138,14 @@
 		89CDDD062F46C4CB00AED9E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				89DA9A892F48F1FA004E0628 /* libz.tbd */,
+				89DA9A882F48F1A0004E0628 /* libz.1.tbd */,
+				898327EB2F48EE8200D7ED53 /* liblzma.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
-
-/* Begin PBXLegacyTarget section */
-		89CDDC502F46C42800AED9E2 /* squashfuse */ = {
-			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 89CDDC512F46C42800AED9E2 /* Build configuration list for PBXLegacyTarget "squashfuse" */;
-			buildPhases = (
-			);
-			buildToolPath = /usr/bin/make;
-			buildWorkingDirectory = "${SRCROOT}/squashfuse";
-			dependencies = (
-			);
-			name = squashfuse;
-			packageProductDependencies = (
-			);
-			passBuildSettingsInEnvironment = 1;
-			productName = squashfuse;
-		};
-/* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
 		89CDDA612F46BFEF00AED9E2 /* squashmac */ = {
@@ -202,7 +179,6 @@
 				89CDDA762F46C01700AED9E2 /* Sources */,
 				89CDDA772F46C01700AED9E2 /* Frameworks */,
 				89CDDA782F46C01700AED9E2 /* Resources */,
-				89CF74DD2F46F4AA00BDB361 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -230,13 +206,11 @@
 				TargetAttributes = {
 					89CDDA612F46BFEF00AED9E2 = {
 						CreatedOnToolsVersion = 26.4;
+						LastSwiftMigration = 2620;
 					};
 					89CDDA792F46C01700AED9E2 = {
 						CreatedOnToolsVersion = 26.4;
 						LastSwiftMigration = 2640;
-					};
-					89CDDC502F46C42800AED9E2 = {
-						CreatedOnToolsVersion = 26.4;
 					};
 				};
 			};
@@ -256,7 +230,6 @@
 			targets = (
 				89CDDA612F46BFEF00AED9E2 /* squashmac */,
 				89CDDA792F46C01700AED9E2 /* squashmacfs */,
-				89CDDC502F46C42800AED9E2 /* squashfuse */,
 			);
 		};
 /* End PBXProject section */
@@ -429,29 +402,49 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9G475R3MEF;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = squashmac/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/squashfuse/.libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.anli.macos.squashmac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "squashmac/squashmac-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -462,29 +455,48 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9G475R3MEF;
-				ENABLE_APP_SANDBOX = YES;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = squashmac/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/squashfuse/.libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.anli.macos.squashmac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "squashmac/squashmac-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -499,6 +511,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9G475R3MEF;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
@@ -518,6 +531,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/squashfuse/.libs",
+					/opt/homebrew/Cellar/xz/5.8.1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
@@ -528,7 +542,7 @@
 				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
 				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
 				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
-				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -549,6 +563,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9G475R3MEF;
 				ENABLE_APP_SANDBOX = YES;
+				ENABLE_DEBUG_DYLIB = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
@@ -568,6 +583,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/squashfuse/.libs",
+					/opt/homebrew/Cellar/xz/5.8.1/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
@@ -578,7 +594,7 @@
 				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
 				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
 				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
-				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -586,33 +602,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "squashmacfs/squashmacfs-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		89CDDC522F46C42800AED9E2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEBUGGING_SYMBOLS = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 9G475R3MEF;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		89CDDC532F46C42800AED9E2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 9G475R3MEF;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -642,15 +631,6 @@
 			buildConfigurations = (
 				89CDDA862F46C01800AED9E2 /* Debug */,
 				89CDDA872F46C01800AED9E2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		89CDDC512F46C42800AED9E2 /* Build configuration list for PBXLegacyTarget "squashfuse" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				89CDDC522F46C42800AED9E2 /* Debug */,
-				89CDDC532F46C42800AED9E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

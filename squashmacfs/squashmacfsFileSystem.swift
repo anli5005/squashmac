@@ -20,11 +20,36 @@ class squashmacfsFileSystem : FSUnaryFileSystem & FSUnaryFileSystemOperations {
     }
     
     func probeResource(resource: FSResource) async throws -> FSProbeResult {
-        guard let pathResource = resource as? FSPathURLResource else {
+        guard let pathResource = resource as? FSPathURLResource, pathResource.url.isFileURL, pathResource.url.startAccessingSecurityScopedResource() else {
             return .notRecognized
         }
         
-        return .recognized(name: "", containerID: FSContainerIdentifier(uuid: UUID()))
+        defer {
+            pathResource.url.stopAccessingSecurityScopedResource()
+        }
+        
+        let handle = try FileHandle(forReadingFrom: pathResource.url)
+        let recognized: Bool
+        
+        do {
+            let data = try handle.read(upToCount: 4)
+            if let data {
+                recognized = data.elementsEqual([0x73, 0x71, 0x73, 0x68] as [UInt8])
+            } else {
+                recognized = false
+            }
+        } catch {
+            try handle.close()
+            throw error
+        }
+        
+        try handle.close()
+        
+        if recognized {
+            return .recognized(name: "", containerID: FSContainerIdentifier(uuid: UUID()))
+        } else {
+            return .notRecognized
+        }
     }
     
     func loadResource(resource: FSResource, options: FSTaskOptions) async throws -> FSVolume {
