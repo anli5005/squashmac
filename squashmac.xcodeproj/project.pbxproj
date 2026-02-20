@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		891209A12F48EF5D00C76734 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 898327EB2F48EE8200D7ED53 /* liblzma.a */; };
 		89CDDA842F46C01800AED9E2 /* squashmacfs.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 89CDDA7A2F46C01700AED9E2 /* squashmacfs.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		89DA9A8A2F48F1FA004E0628 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 89DA9A892F48F1FA004E0628 /* libz.tbd */; };
 /* End PBXBuildFile section */
@@ -37,7 +36,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		898327EB2F48EE8200D7ED53 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = /opt/homebrew/lib/liblzma.a; sourceTree = "<absolute>"; };
 		89CDDA622F46BFEF00AED9E2 /* squashmac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = squashmac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89CDDA7A2F46C01700AED9E2 /* squashmacfs.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = squashmacfs.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		89DA9A882F48F1A0004E0628 /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = usr/lib/libz.1.tbd; sourceTree = SDKROOT; };
@@ -108,7 +106,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				89DA9A8A2F48F1FA004E0628 /* libz.tbd in Frameworks */,
-				891209A12F48EF5D00C76734 /* liblzma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +137,6 @@
 			children = (
 				89DA9A892F48F1FA004E0628 /* libz.tbd */,
 				89DA9A882F48F1A0004E0628 /* libz.1.tbd */,
-				898327EB2F48EE8200D7ED53 /* liblzma.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
